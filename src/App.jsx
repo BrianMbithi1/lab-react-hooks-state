@@ -1,38 +1,59 @@
-import React, { useState } from 'react'
-import ProductList from './components/ProductList'
-import DarkModeToggle from './components/DarkModeToggle'
-import Cart from './components/Cart'
+import React, { useState } from "react";
+import DarkModeToggle from "./DarkModeToggle";
+import ProductList from "./ProductList";
+import itemData from "../data/items"; // adjust to wherever your item data lives
+import Cart from "./Cart";
 
-const App = () => {
-  // TODO: Implement state for dark mode toggle
+// ...inside the returned JSX, after <ProductList ... />
+<Cart cart={cart} />  
 
-  // TODO: Implement state for cart management
+function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [cart, setCart] = useState([]);
+  const [category, setCategory] = useState("All");
 
-  // TODO: Implement state for category filtering
+  function handleToggleDarkMode() {
+    setDarkMode((prev) => !prev);
+  }
+
+  function handleAddToCart(product) {
+    // don't add the same product twice
+    if (!cart.some((item) => item.id === product.id)) {
+      setCart([...cart, product]);
+    }
+  }
+
+  function handleCategoryChange(event) {
+    setCategory(event.target.value);
+  }
+
+  const itemsToDisplay = itemData.filter(
+    (item) => category === "All" || item.category === category
+  );
 
   return (
-    <div>
-      <h1>🛒 Shopping App</h1>
-      <p>
-        Welcome! Your task is to implement filtering, cart management, and dark
-        mode.
-      </p>
-
-      {/* TODO: Render DarkModeToggle and implement dark mode functionality */}
-
-      {/* TODO: Implement category filter dropdown */}
-      <label>Filter by Category: </label>
-      <select>
-        <option value="all">All</option>
-        <option value="Fruits">Fruits</option>
-        <option value="Dairy">Dairy</option>
-      </select>
-
-      <ProductList />
-
-      {/* TODO: Implement and render Cart component */}
+    <div className={darkMode ? "App dark" : "App light"}>
+      <header>
+        <h1>Grocery App</h1>
+        <DarkModeToggle darkMode={darkMode} onToggle={handleToggleDarkMode} />
+        <select
+          name="filter"
+          value={category}
+          onChange={handleCategoryChange}
+        >
+          <option value="All">Filter by category</option>
+          <option value="Produce">Produce</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Dessert">Dessert</option>
+        </select>
+      </header>
+      <ProductList
+        products={itemsToDisplay}
+        cart={cart}
+        onAddToCart={handleAddToCart}
+      />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
