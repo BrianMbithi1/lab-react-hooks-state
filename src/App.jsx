@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import DarkModeToggle from "./components/DarkModeToggle";
-import ProductList from "./components/ProductList";
-import Cart from "./components/Cart";                   
-import itemData from "../data/items"; 
+import ProductList, { sampleProducts } from "./components/ProductList";
+import Cart from "./components/Cart";
 
+const categories = ["All", ...new Set(sampleProducts.map((p) => p.category))];
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [cart, setCart] = useState([]);
   const [category, setCategory] = useState("All");
-
-  function handleToggleDarkMode() {
-    setDarkMode((prev) => !prev);
-  }
 
   function handleAddToCart(product) {
     if (!cart.some((item) => item.id === product.id)) {
@@ -20,38 +16,28 @@ function App() {
     }
   }
 
-  function handleCategoryChange(event) {
-    setCategory(event.target.value);
-  }
-
-  const itemsToDisplay = itemData.filter(
-    (item) => category === "All" || item.category === category
-  );
-
   return (
     <div className={darkMode ? "App dark" : "App light"}>
       <header>
         <h1>Grocery App</h1>
-        <DarkModeToggle darkMode={darkMode} onToggle={handleToggleDarkMode} />
+        <DarkModeToggle
+          darkMode={darkMode}
+          onToggle={() => setDarkMode((prev) => !prev)}
+        />
         <select
-          name="filter"
           value={category}
-          onChange={handleCategoryChange}
+          onChange={(e) => setCategory(e.target.value)}
         >
-          <option value="All">Filter by category</option>
-          <option value="Produce">Produce</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Dessert">Dessert</option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
         </select>
       </header>
 
-      <ProductList
-        products={itemsToDisplay}
-        cart={cart}
-        onAddToCart={handleAddToCart}
-      />
-
-      <Cart cart={cart} />                    
+      <ProductList category={category} onAddToCart={handleAddToCart} />
+      <Cart cart={cart} />
     </div>
   );
 }

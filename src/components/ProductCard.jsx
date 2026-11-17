@@ -1,11 +1,16 @@
 import React from "react";
 
-function ProductCard({ product, inCart, onAddToCart }) {
+function ProductCard({ product, onAddToCart }) {
   return (
-    <li className={inCart ? "in-cart" : ""}>
-      <span>{product.name}</span>
-      <span className="category">{product.category}</span>
-      <button onClick={() => onAddToCart(product)}>Add to Cart</button>
+    <li>
+      <span>{product.name}</span>{" "}
+      <span className="category">{product.category}</span>{" "}
+      <button
+        data-testid={`product-${product.id}`}
+        onClick={() => onAddToCart(product)}
+      >
+        Add to Cart
+      </button>
     </li>
   );
 }

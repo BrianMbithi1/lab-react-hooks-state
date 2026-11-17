@@ -1,4 +1,3 @@
-
 import React from "react";
 
 function DarkModeToggle({ darkMode, onToggle }) {
