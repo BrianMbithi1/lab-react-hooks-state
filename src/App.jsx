@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import DarkModeToggle from "./DarkModeToggle";
-import ProductList from "./ProductList";
-import Cart from "./Cart";                    
+import DarkModeToggle from "./components/DarkModeToggle";
+import ProductList from "./components/ProductList";
+import Cart from "./components/Cart";                   
 import itemData from "../data/items"; 
+
+
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [cart, setCart] = useState([]);
