@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import ProductList from "./ProductList";
-import itemData from "../data/items"; // adjust to wherever your item data lives
-import Cart from "./Cart";
-
-// ...inside the returned JSX, after <ProductList ... />
-<Cart cart={cart} />  
-
+import Cart from "./Cart";                    
+import itemData from "../data/items"; 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [cart, setCart] = useState([]);
@@ -17,7 +13,6 @@ function App() {
   }
 
   function handleAddToCart(product) {
-    // don't add the same product twice
     if (!cart.some((item) => item.id === product.id)) {
       setCart([...cart, product]);
     }
@@ -47,11 +42,14 @@ function App() {
           <option value="Dessert">Dessert</option>
         </select>
       </header>
+
       <ProductList
         products={itemsToDisplay}
         cart={cart}
         onAddToCart={handleAddToCart}
       />
+
+      <Cart cart={cart} />                    
     </div>
   );
 }
